@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:web\" \"npm run dev:bot\"",
     "build": "next build",
-    "start": "concurrently \"npm run start:web\" \"npm run dev:bot\"",
+    "start": "concurrently \"next start -p 3498\" \"npm run dev:bot\"",
     "lint": "next lint",
-    "dev:web": "next dev",
+    "dev:web": "next dev -p 3498",
     "dev:bot": "tsx watch src/bot/index.ts",
-    "start:web": "next start"
+    "start:web": "next start -p 3498"
   },
   "dependencies": {
     "clsx": "^2.1.0",
@@ -17,7 +17,7 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.4",
     "framer-motion": "^11.0.3",
-    "lucide-react": "^0.330.0",
+    "mage-icons-react": "^0.7.0-beta",
     "mongoose": "^8.1.1",
     "next": "14.1.0",
     "react": "^18",

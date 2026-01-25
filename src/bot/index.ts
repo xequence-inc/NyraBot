@@ -11,6 +11,10 @@ mongoose.connect(process.env.MONGO_URI || '')
     .then(() => console.log('✅ Connected to MongoDB (Bot)'))
     .catch(err => console.error('❌ MongoDB Error:', err));
 
+import { registerCommands, setupCommandHandlers } from './commands';
+
+// ... (DB connection)
+
 export const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -22,14 +26,10 @@ export const client = new Client({
 
 client.once('ready', () => {
     console.log(`✅ Logged in as ${client.user?.tag}`);
+    registerCommands(client);
 });
 
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-    if (interaction.commandName === 'ping') {
-        await interaction.reply('Pong!');
-    }
-});
+setupCommandHandlers(client);
 
 client.login(process.env.DISCORD_TOKEN).catch(e => {
     console.error('❌ Login Failed:', e);

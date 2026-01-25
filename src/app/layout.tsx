@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({ 
+  subsets: ["latin"],
+  variable: '--font-outfit'
+});
 
 export const metadata: Metadata = {
   title: "Nyra | Manage Less. Do More.",
-  description: "The all-in-one Discord platform.",
+  description: "The all-in-one Discord platform for moderation, economy, and community engagement.",
 };
 
 export default function RootLayout({
@@ -15,8 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={outfit.variable}>
+      <body className="font-sans antialiased bg-[#030305] text-white min-h-screen">
+        {children}
+      </body>
     </html>
   );
 }
