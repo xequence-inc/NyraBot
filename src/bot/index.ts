@@ -1,0 +1,36 @@
+import { Client, GatewayIntentBits } from 'discord.js';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+console.log('🤖 Bot Service Starting...');
+
+// DB Connection
+mongoose.connect(process.env.MONGO_URI || '')
+    .then(() => console.log('✅ Connected to MongoDB (Bot)'))
+    .catch(err => console.error('❌ MongoDB Error:', err));
+
+export const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent
+    ]
+});
+
+client.once('ready', () => {
+    console.log(`✅ Logged in as ${client.user?.tag}`);
+});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+    if (interaction.commandName === 'ping') {
+        await interaction.reply('Pong!');
+    }
+});
+
+client.login(process.env.DISCORD_TOKEN).catch(e => {
+    console.error('❌ Login Failed:', e);
+});
