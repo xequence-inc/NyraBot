@@ -3,7 +3,7 @@ import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   glow?: boolean;
 }
 
@@ -23,6 +23,7 @@ export function Button({ className, variant = 'primary', size = 'md', glow = fal
         glow && variant === 'primary' && "shadow-[0_0_20px_-5px_var(--primary)]",
 
         // Sizes
+        size === 'xs' && "px-2 py-1 text-[10px] h-6 min-w-16",
         size === 'sm' && "px-3 py-1.5 text-xs",
         size === 'md' && "px-5 py-2.5 text-sm",
         size === 'lg' && "px-8 py-4 text-base",
