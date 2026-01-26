@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { getBotGuilds } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   const cookieStore = await cookies();
@@ -24,17 +25,8 @@ export async function GET(request: NextRequest) {
     // Filter to guilds where user has MANAGE_GUILD permission (0x20)
     const manageableGuilds = allGuilds.filter((g: any) => (parseInt(g.permissions) & 0x20) === 0x20);
 
-    // Fetch bot's guilds to check which ones have the bot
-    let botGuildIds: string[] = [];
-    try {
-      const botGuildsRes = await fetch(`${request.nextUrl.origin}/api/bot/guilds`);
-      if (botGuildsRes.ok) {
-        const botData = await botGuildsRes.json();
-        botGuildIds = botData.guilds || [];
-      }
-    } catch (e) {
-      console.error('Failed to fetch bot guilds:', e);
-    }
+    // Fetch bot's guilds directly (no self-fetch loop)
+    const botGuildIds = await getBotGuilds();
 
     // Map guilds with hasBot flag
     const guilds = manageableGuilds.map((g: any) => ({

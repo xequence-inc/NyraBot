@@ -34,18 +34,17 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-2xl">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-sm group-hover:scale-110 transition-transform">
-            N
-          </div>
-          <span className="font-bold text-xl tracking-tight">Nyra</span>
+          <img src="/logo.png" alt="Nyra Logo" className="w-9 h-9 group-hover:scale-110 transition-transform" />
+          <span className="font-bold text-xl tracking-tight font-display">Nyra</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-8 text-sm text-zinc-400">
           <Link href="/premium" className={`hover:text-white transition-colors ${pathname === '/premium' ? 'text-white' : ''}`}>
             Pricing
           </Link>
-          <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="https://discord.gg/nyra" target="_blank" rel="noopener" className="hover:text-white transition-colors">Support</a>
+          <a href="/#features" className="hover:text-white transition-colors">Features</a>
+          <Link href="/docs" className="hover:text-white transition-colors">Documentation</Link>
+          <a href="/discord" target="_blank" rel="noopener" className="hover:text-white transition-colors">Support</a>
         </div>
         
         {user ? (

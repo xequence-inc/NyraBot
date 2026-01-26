@@ -3,18 +3,20 @@ import { cookies } from 'next/headers';
 
 const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID!;
 const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET!;
-const REDIRECT_URI = process.env.DISCORD_REDIRECT_URI || 'http://localhost:3498/api/auth/callback';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
+
+  // Fix: Dynamically determine redirect URI from request origin if env var is missing
+  const origin = request.nextUrl.origin;
+  const redirectUri = process.env.DISCORD_REDIRECT_URI || `${origin}/api/auth/callback`;
 
   if (!code) {
     return NextResponse.redirect(new URL('/login?error=no_code', request.url));
   }
 
   try {
-    // Exchange code for tokens
     const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest) {
         client_secret: DISCORD_CLIENT_SECRET,
         grant_type: 'authorization_code',
         code,
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: redirectUri, 
       }),
     });
 
@@ -33,8 +35,6 @@ export async function GET(request: NextRequest) {
     }
 
     const tokens = await tokenRes.json();
-
-    // Get user info
     const userRes = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${tokens.access_token}` },
     });
@@ -44,8 +44,6 @@ export async function GET(request: NextRequest) {
     }
 
     const user = await userRes.json();
-
-    // Store session in cookie (simplified - use proper session management in production)
     const cookieStore = await cookies();
     cookieStore.set('discord_token', tokens.access_token, {
       httpOnly: true,

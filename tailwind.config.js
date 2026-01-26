@@ -25,7 +25,8 @@ module.exports = {
         '3xl': '24px',
       },
       fontFamily: {
-        sans: ['system-ui', 'sans-serif'],
+        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-audiowide)', 'display'],
       },
       animation: {
         'gradient': 'gradient 8s linear infinite',

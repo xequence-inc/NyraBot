@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import Guild from '../models/Guild';
 
 dotenv.config();
 
@@ -23,19 +24,53 @@ export const client = new Client({
 
 let botGuildIds: string[] = [];
 
-client.once('clientReady', () => {
+client.once('clientReady', async () => {
   console.log(`✅ Logged in as ${client.user?.tag}`);
   console.log(`📊 Connected to ${client.guilds.cache.size} guilds`);
   botGuildIds = [...client.guilds.cache.keys()];
   registerCommands(client);
+  
+  // Sync guilds to DB
+  for (const guild of client.guilds.cache.values()) {
+    try {
+      await Guild.findOneAndUpdate(
+        { guildId: guild.id },
+        { 
+          $setOnInsert: { 
+            name: guild.name,
+            ownerId: guild.ownerId,
+            joinedAt: new Date()
+          } 
+        },
+        { upsert: true, new: true }
+      );
+    } catch (err) {
+      console.error(`Failed to sync guild ${guild.name}:`, err);
+    }
+  }
 });
 
-client.on('guildCreate', guild => {
+client.on('guildCreate', async (guild) => {
+  console.log(`➕ Joined guild: ${guild.name} (${guild.id})`);
   botGuildIds = [...client.guilds.cache.keys()];
+  
+  // Create DB entry
+  try {
+    await Guild.create({
+      guildId: guild.id,
+      name: guild.name,
+      ownerId: guild.ownerId,
+    });
+    console.log(`📝 Created DB entry for ${guild.name}`);
+  } catch (err) {
+    console.error('Failed to create guild DB entry:', err);
+  }
 });
 
-client.on('guildDelete', guild => {
+client.on('guildDelete', async (guild) => {
+  console.log(`➖ Left guild: ${guild.name} (${guild.id})`);
   botGuildIds = [...client.guilds.cache.keys()];
+  // Optional: Mark as inactive instead of delete
 });
 
 setupCommandHandlers(client);
