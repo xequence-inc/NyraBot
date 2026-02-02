@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
+@theme {
+  /* Fonts */
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
+
+  /* Colors */
+  --color-background: #0F0F13;
+  
+  --color-surface-100: #1A1A23;
+  --color-surface-200: #23232F;
+  --color-surface-300: #2C2C3A;
+
+  --color-primary: #8B5CF6;
+  --color-primary-hover: #7C3AED;
+
+  --color-accent-orange: #F97316;
+  --color-accent-pink: #EC4899;
+  --color-accent-purple: #A855F7;
+
+  /* Background Images */
+  --image-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+}
+
+/* Custom Utilities that use the theme */
+@utility glass-panel {
+  @apply bg-surface-100/40 border border-white/5 backdrop-blur-md;
+}
+
+@utility glass-card {
+  @apply bg-gradient-to-br from-white/10 to-transparent border border-white/10 backdrop-blur-sm;
+}
+
+/* Base Styles */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 15, 15, 19;
+  --background-end-rgb: 15, 15, 19;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
