@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
+import Icon from "@/components/Icon";
 
 export default function Login() {
   return (
@@ -27,7 +28,7 @@ export default function Login() {
                         className="w-full bg-[#5865F2] hover:bg-[#4752C4] transition-all py-4 px-6 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-[#5865F2]/20 hover:shadow-[#5865F2]/40 hover:-translate-y-1 group relative overflow-hidden"
                     >
                        <span className="relative z-10 flex items-center gap-3">
-                           <i className="fi fi-brands-discord text-2xl flex items-center justify-center"></i>
+                           <Icon name="discord" variant="filled" className="text-2xl" />
                            Continue with Discord
                        </span>
                    </button>

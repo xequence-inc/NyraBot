@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Icon from "@/components/Icon";
 
 export default function ServerLayout({
   children,
@@ -14,10 +15,10 @@ export default function ServerLayout({
   const { guildId } = React.use(params);
 
   const links = [
-    { name: "Dashboard", href: `/dashboard/${guildId}/home`, icon: "fi-rr-apps" },
-    { name: "Button Roles", href: `/dashboard/${guildId}/roles`, icon: "fi-rr-magic-wand", active: true },
-    { name: "Moderation", href: `/dashboard/${guildId}/moderation`, icon: "fi-rr-shield-check" },
-    { name: "Utils", href: `/dashboard/${guildId}/utils`, icon: "fi-rr-settings" },
+    { name: "Dashboard", href: `/dashboard/${guildId}/home`, icon: "dashboard" },
+    { name: "Button Roles", href: `/dashboard/${guildId}/roles`, icon: "mouse-pointer" },
+    { name: "Moderation", href: `/dashboard/${guildId}/moderation`, icon: "shield-check" }, 
+    { name: "Utils", href: `/dashboard/${guildId}/utils`, icon: "settings" },
   ];
 
   return (
@@ -35,15 +36,22 @@ export default function ServerLayout({
         </div>
 
         <nav className="space-y-2 flex-1">
-           {links.map((link) => (
+           {links.map((link) => {
+             const isActive = pathname?.startsWith(link.href) || (link.name === "Dashboard" && pathname === `/dashboard/${guildId}/home`);
+             return (
              <Link key={link.href} href={link.href}>
-                <div className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors cursor-pointer ${pathname === link.href ? 'bg-accent-purple text-white shadow-lg shadow-accent-purple/20' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
-                    <i className={`fi ${link.icon} text-lg mt-0.5`}></i>
+                <div className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors cursor-pointer ${isActive ? 'bg-accent-purple text-white shadow-lg shadow-accent-purple/20' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
+                    <Icon 
+                        name={link.icon} 
+                        variant={isActive ? "filled" : "outline"} 
+                        className="text-xl" 
+                    />
                     <span className="font-medium text-sm">{link.name}</span>
                     {link.name === "Button Roles" && <div className="ml-auto w-8 h-4 bg-white/20 rounded-full flex items-center justify-end p-0.5"><div className="w-3 h-3 bg-white rounded-full"></div></div>}
                 </div>
              </Link>
-           ))}
+             )
+           })}
         </nav>
 
         {/* User Card */}
@@ -53,7 +61,7 @@ export default function ServerLayout({
                 <div className="h-3 w-20 bg-surface-300 rounded mb-1"></div>
                 <div className="h-2 w-12 bg-surface-300 rounded"></div>
             </div>
-            <i className="fi fi-rr-settings text-gray-400"></i>
+            <Icon name="settings" className="text-gray-400" />
         </div>
       </aside>
 

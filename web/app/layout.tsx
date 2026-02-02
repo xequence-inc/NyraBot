@@ -18,6 +18,11 @@ const rubik = Rubik({
 export const metadata: Metadata = {
   title: "Nyra | The Next Gen Discord Bot",
   description: "Modular, powerful, and built for scale.",
+  icons: {
+    icon: "/nyralogo.png",
+    shortcut: "/nyralogo.png",
+    apple: "/nyralogo.png",
+  }
 };
 
 import AuthProvider from "@/components/AuthProvider";
@@ -30,9 +35,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${outfit.variable} ${rubik.variable}`}>
        <head>
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css' />
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-solid-rounded/css/uicons-solid-rounded.css' />
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-brands/css/uicons-brands.css' />
+          <link rel="icon" href="/nyralogo.png" />
+          {/* Flaticon removed. Using Mage Icons via Iconify. */}
       </head>
       <body className="font-sans antialiased bg-background text-white selection:bg-accent-purple/30 overflow-x-hidden min-h-screen">
         <AuthProvider>

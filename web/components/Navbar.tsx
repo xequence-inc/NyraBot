@@ -1,6 +1,6 @@
-"use client";
 import Link from "next/link";
 import Image from "next/image";
+import Icon from "@/components/Icon";
 
 export default function Navbar() {
   return (
@@ -23,7 +23,7 @@ export default function Navbar() {
              <Link href="/login" className="text-sm font-medium text-gray-300 hover:text-white transition-colors flex items-center h-full">Log In</Link>
              <Link href="/dashboard" className="bg-white text-black hover:bg-gray-200 transition-colors px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-white/5 flex items-center gap-2">
                 Dashboard
-                <i className="fi fi-br-arrow-right text-[10px]"></i>
+                <Icon name="arrow-right" className="text-xs" />
              </Link>
           </div>
         </div>
