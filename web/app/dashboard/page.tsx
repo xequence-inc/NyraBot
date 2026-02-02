@@ -7,12 +7,8 @@ import { useSession } from 'next-auth/react';
 export default function DashboardSelection() {
   const { data: session } = useSession();
 
-  // Mock Data (In reality, fetch from API which uses Discord API + filter by Manage Server perm)
-  const guilds = [
-      { id: "123", name: "Blue Shark", icon: null, owner: true },
-      { id: "456", name: "Coyote", icon: null, owner: false },
-      { id: "789", name: "OS Tech.", icon: null, owner: true },
-  ];
+  // Placeholder State (Since we aren't connected to real API yet)
+  const guilds: any[] = []; 
 
   return (
     <div className="min-h-screen p-8 pt-24">
@@ -23,29 +19,41 @@ export default function DashboardSelection() {
                     <input 
                         type="text" 
                         placeholder="Filter Server" 
-                        className="bg-surface-100/50 border border-white/5 rounded-full px-5 py-2.5 text-sm focus:outline-none focus:border-accent-purple/50 w-64"
+                        className="bg-surface-100/50 border border-white/5 rounded-full px-5 py-2.5 text-sm focus:outline-none focus:border-accent-purple/50 w-64 pl-10"
                     />
-                    <i className="fi fi-rr-search absolute right-4 top-3 text-gray-500"></i>
+                    <i className="fi fi-rr-search absolute left-4 top-3 text-gray-500"></i>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {guilds.map((guild, i) => (
-                    <div key={i} className="glass-panel p-6 rounded-3xl flex flex-col items-center text-center group hover:bg-surface-200/50 transition-colors">
-                        <div className="w-20 h-20 rounded-full bg-surface-300 mb-4 flex items-center justify-center text-2xl font-bold">
-                            {guild.icon ? <img src={guild.icon} /> : guild.name.substring(0,2)}
-                        </div>
-                        <h3 className="font-bold text-lg mb-1">{guild.name}</h3>
-                        <p className="text-xs text-gray-400 mb-6">{guild.owner ? 'Owner' : 'Bot Master'}</p>
-                        
-                        <Link href={`/dashboard/${guild.id}/home`} className="mt-auto w-full">
-                            <button className={`w-full py-2.5 rounded-full text-sm font-bold transition-colors ${i % 2 === 0 ? 'bg-[#00DDA2] text-black hover:bg-[#00DDA2]/90' : 'bg-[#FFC940] text-black hover:bg-[#FFC940]/90'}`}>
-                                {i % 2 === 0 ? 'Go' : 'Setup'}
-                            </button>
-                        </Link>
+            {session ? (
+                 guilds.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Real guild mapping would go here */}
                     </div>
-                ))}
-            </div>
+                 ) : (
+                    <div className="flex flex-col items-center justify-center py-20 text-center space-y-4 rounded-3xl border border-dashed border-white/10 bg-white/5">
+                        <div className="w-16 h-16 rounded-full bg-surface-200 flex items-center justify-center text-gray-400">
+                             <i className="fi fi-rr-search-alt text-2xl"></i>
+                        </div>
+                        <h3 className="text-xl font-bold">No Servers Found</h3>
+                        <p className="text-gray-400 max-w-sm">It looks like you don't manage any servers, or Nyra isn't in them yet.</p>
+                        <button className="px-6 py-2.5 bg-accent-purple rounded-full font-bold text-white text-sm hover:opacity-90 transition-opacity">
+                            Invite Nyra
+                        </button>
+                    </div>
+                 )
+            ) : (
+                <div className="flex flex-col items-center justify-center py-32 text-center space-y-6">
+                     <div className="w-20 h-20 rounded-3xl bg-surface-100 flex items-center justify-center mb-2 animate-bounce-slow">
+                         <i className="fi fi-brands-discord text-4xl text-[#5865F2]"></i>
+                     </div>
+                     <h2 className="text-3xl font-heading font-bold">Login Required</h2>
+                     <p className="text-gray-400 max-w-md">Please login with Discord to view and manage your servers.</p>
+                     <Link href="/login" className="px-8 py-3 bg-[#5865F2] hover:bg-[#4752C4] rounded-xl font-bold text-white transition-colors shadow-lg shadow-[#5865F2]/20">
+                         Login with Discord
+                     </Link>
+                </div>
+            )}
         </div>
     </div>
   );

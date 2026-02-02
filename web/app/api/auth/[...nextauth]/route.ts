@@ -13,7 +13,7 @@ const handler = NextAuth({
     async jwt({ token, account, profile }) {
       if (account) {
         token.accessToken = account.access_token;
-        token.id = profile?.id;
+        token.id = (profile as any)?.id;
       }
       return token;
     },
